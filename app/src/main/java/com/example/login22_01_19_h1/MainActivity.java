@@ -2,15 +2,33 @@ package com.example.login22_01_19_h1;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.login22_01_19_h1.LoginSingup.Login;
+import com.example.login22_01_19_h1.LoginSingup.SignUp;
 
-public class MainActivity extends AppCompatActivity {
+//essam
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+//import android.content.Intent;
+import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Bundle;
+import com.example.login22_01_19_h1.sliderhome.adapterCard;
+import com.example.login22_01_19_h1.sliderhome.CardHelper;
+import com.example.login22_01_19_h1.sliderhome.car;
+
+import java.util.ArrayList;
+
+import android.os.Bundle;
+
+public class MainActivity extends AppCompatActivity  {
     Button login, Reg;
     Toolbar toolbar;
     DBHelper dbHelper;
@@ -23,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        System.out.println("Hello world");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dbHelper = new DBHelper(this);
@@ -46,4 +64,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 }

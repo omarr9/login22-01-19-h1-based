@@ -1,4 +1,4 @@
-package com.example.login22_01_19_h1;
+package com.example.login22_01_19_h1.LoginSingup;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.login22_01_19_h1.DBHelper;
+import com.example.login22_01_19_h1.R;
 //import com.example.login_reg.Sql.DBHelper;
 
 public class SignUp extends AppCompatActivity {
@@ -33,7 +36,7 @@ public class SignUp extends AppCompatActivity {
                 boolean b =dbHelper.insetUserData(name1,number1,email1,pass1);
                 if (b){
                     Toast.makeText(SignUp.this,"Data inserted",Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(SignUp.this,Login.class);
+                    Intent i = new Intent(SignUp.this, Login.class);
                     startActivity(i);
                 }else {
                     Toast.makeText(SignUp.this,"Failed To insert Data",Toast.LENGTH_SHORT).show();

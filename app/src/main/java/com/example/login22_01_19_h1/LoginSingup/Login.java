@@ -1,4 +1,4 @@
-package com.example.login22_01_19_h1;
+package com.example.login22_01_19_h1.LoginSingup;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.login22_01_19_h1.DBHelper;
+import com.example.login22_01_19_h1.Menu.Navigation_Main;
+import com.example.login22_01_19_h1.R;
 
 public class Login extends AppCompatActivity {
     EditText email , password;
@@ -36,12 +40,12 @@ public class Login extends AppCompatActivity {
                 if(cursor.getCount() == 0){
                     Toast.makeText(Login.this,"No entries Exists",Toast.LENGTH_LONG).show();
                 }
-                if (loginCheck(cursor,emailCheck,passCheck)) {
-                    Intent intent = new Intent(Login.this,FinalPage.class);
-                    intent.putExtra("email",emailCheck);
-                    email.setText("");
-                    password.setText("");
-                    startActivity(intent);
+                if (loginCheck(cursor,emailCheck,passCheck) ) {
+                    Intent intent1 = new Intent(Login.this, Navigation_Main.class);
+                    startActivity(intent1);
+//                    intent.putExtra("email",emailCheck);
+//                    email.setText("");
+//                    password.setText("");
                 }else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
                     builder.setCancelable(true);
@@ -56,7 +60,7 @@ public class Login extends AppCompatActivity {
         createAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Login.this,SignUp.class);
+                Intent intent = new Intent(Login.this, SignUp.class);
                 startActivity(intent);
             }
         });
