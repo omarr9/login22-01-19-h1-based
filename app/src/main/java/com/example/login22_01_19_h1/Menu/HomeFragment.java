@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment implements adapterCard.ListItemClickL
 
         ////////////
         imgtypeview=getView().findViewById(R.id.car_image);
-        carnameview=getView().findViewById(R.id.textNumber);
+//        carnameview=getView().findViewById(R.id.textNumber);
 
         dbHelper = new DBHelper(this.getActivity());
         boolean b =dbHelper.insetCarData("Sonata",1,3);

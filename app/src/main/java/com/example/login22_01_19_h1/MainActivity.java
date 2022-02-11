@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.login22_01_19_h1.LoginSingup.Login;
+import com.example.login22_01_19_h1.LoginSingup.Login_MySql;
 import com.example.login22_01_19_h1.LoginSingup.SignUp;
 
 //essam
@@ -20,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+
+import com.example.login22_01_19_h1.LoginSingup.signUp_mysqlphp;
 import com.example.login22_01_19_h1.sliderhome.adapterCard;
 import com.example.login22_01_19_h1.sliderhome.CardHelper;
 import com.example.login22_01_19_h1.sliderhome.car;
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity  {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Login.class);
+                Intent intent = new Intent(MainActivity.this, Login_MySql.class);
                 startActivity(intent);
             }
         });
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity  {
         Reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SignUp.class);
+                Intent intent = new Intent(MainActivity.this, signUp_mysqlphp.class);
                 startActivity(intent);
             }
         });

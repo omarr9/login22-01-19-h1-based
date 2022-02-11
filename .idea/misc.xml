@@ -28,7 +28,7 @@
         <entry key="..\:/Users/Meroo/Desktop/ForthStable/login220119h1/app/src/main/res/layout/activity_login.xml" value="0.15830800405268491" />
         <entry key="..\:/Users/Meroo/Desktop/ForthStable/login220119h1/app/src/main/res/layout/activity_main.xml" value="0.15830800405268491" />
         <entry key="..\:/Users/Meroo/Desktop/ForthStable/login220119h1/app/src/main/res/layout/activity_navigation_main.xml" value="0.1897644927536232" />
-        <entry key="..\:/Users/Meroo/Desktop/ForthStable/login220119h1/app/src/main/res/layout/activity_sign_up.xml" value="0.15830800405268491" />
+        <entry key="..\:/Users/Meroo/Desktop/ForthStable/login220119h1/app/src/main/res/layout/activity_sign_up.xml" value="0.375" />
         <entry key="..\:/Users/Meroo/Desktop/ForthStable/login220119h1/app/src/main/res/layout/activity_spinner_main.xml" value="0.25" />
         <entry key="..\:/Users/Meroo/Desktop/ForthStable/login220119h1/app/src/main/res/layout/activity_type_spinner_main.xml" value="0.15830800405268491" />
         <entry key="..\:/Users/Meroo/Desktop/ForthStable/login220119h1/app/src/main/res/layout/car.xml" value="0.15830800405268491" />
@@ -51,6 +51,7 @@
         <entry key="..\:/Users/Meroo/Desktop/ForthStable/login220119h1/app/src/main/res/mipmap-anydpi-v26/ic_Hundai_logo_round.xml" value="0.3416666666666667" />
         <entry key="..\:/Users/Meroo/Desktop/ForthStable/login220119h1/app/src/main/res/mipmap-anydpi-v26/ic_Toyota_logo_round.xml" value="0.3416666666666667" />
         <entry key="..\:/Users/Meroo/Desktop/ForthStable/login220119h1/app/src/main/res/mipmap-anydpi-v26/ic_app_icon_logo.xml" value="0.1287037037037037" />
+        <entry key="..\:/Users/Meroo/Desktop/ForthStable/login220119h1/app/src/main/res/xml/network_security_config.xml" value="0.18072916666666666" />
         <entry key="app/src/main/res/layout/car.xml" value="0.2675925925925926" />
         <entry key="app/src/main/res/layout/carddesign.xml" value="0.2675925925925926" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.5" />

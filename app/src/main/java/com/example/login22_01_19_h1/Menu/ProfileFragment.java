@@ -3,7 +3,7 @@ package com.example.login22_01_19_h1.Menu;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +14,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.login22_01_19_h1.Constants;
 import com.example.login22_01_19_h1.DBHelper;
-import com.example.login22_01_19_h1.LoginSingup.Login;
 import com.example.login22_01_19_h1.SpinnerCar.CarItemAdapterSecond;
 import com.example.login22_01_19_h1.SpinnerCar.CarRowItem;
 import com.example.login22_01_19_h1.SpinnerCompany.CompanyItemAdapter;
@@ -25,7 +32,12 @@ import com.example.login22_01_19_h1.SpinnerCompany.RowItem;
 import com.example.login22_01_19_h1.SpinnerType.RowItemType;
 import com.example.login22_01_19_h1.SpinnerType.TypeItemAdapter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ProfileFragment extends Fragment {
@@ -41,7 +53,7 @@ public class ProfileFragment extends Fragment {
     String typecar = "";
     String Company = "";
     public String car = "";
-    static int  counterCarId=3;
+    static int counterCarId = 3;
     DBHelper dbHelper;
 
     private ArrayList<CarRowItem> mToyotaCar;
@@ -50,6 +62,9 @@ public class ProfileFragment extends Fragment {
     private ArrayList<CarRowItem> mMercedesCar;
 
     private CarItemAdapterSecond mAdapterSecond;
+    private ProgressDialog progressDialog;
+
+
     ////
 
     ///
@@ -71,6 +86,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        progressDialog = new ProgressDialog(getActivity());
 
         initList();
         mCarTypeList = new ArrayList<>();
@@ -239,27 +255,71 @@ public class ProfileFragment extends Fragment {
                 textViewType.setText(typecar + "");
                 textViewCompany.setText(Company + "");
                 textViewCar.setText(car + "");
-                int tp  =5;
-                if (typecar.equalsIgnoreCase("Sedan")) {
-                tp =0;
-                }    if (typecar.equalsIgnoreCase("SUV")) {
-                    tp=1;
-                }
-                dbHelper = new DBHelper(getActivity());
-                if (bt.isPressed()) {
-//                        boolean b = dbHelper.insetCarDataTest(car, typecar, Company, 100);
+//                int tp  =5;
+//                if (typecar.equalsIgnoreCase("Sedan")) {
+//                tp =0;
+//                }    if (typecar.equalsIgnoreCase("SUV")) {
+//                    tp=1;
+//                }
+//                dbHelper = new DBHelper(getActivity());
+//                if (bt.isPressed()) {
+////                        boolean b = dbHelper.insetCarDataTest(car, typecar, Company, 100);
+//
+//                        boolean b = dbHelper.insetCarData(car, tp, ++counterCarId);
+//                        textViewCar.setText("Done" + "");
+//
+//                }
 
-                        boolean b = dbHelper.insetCarData(car, tp, ++counterCarId);
-                        textViewCar.setText("Done" + "");
 
-                }
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_USERCARS, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+////                        try {
+//                            JSONObject jsonObject = new JSONObject(response);
+//
+//                            Toast.makeText(getContext(), jsonObject.getString("message")+"+JSON", Toast.LENGTH_LONG).show();
+//
+//
+//                        } catch (Exception e) {
+//                            JSONObject jsonObject2 ;
+//                            try {
+//                                jsonObject2 = new JSONObject(response);
+//                            Toast.makeText(getContext(), jsonObject2.getString("message")+"+JSON", Toast.LENGTH_LONG).show();
+//                            textViewCar.setText("From Inside Jsonn");
+//                            } catch (JSONException jsonException) {
+//                                jsonException.printStackTrace();
+//                            }
+//                            e.printStackTrace();
+//
+//
+//
+//                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.hide();
+//                        Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
 
-//                Intent intent1 = new Intent(Login.this, Navigation_Main.class);
-//                startActivity(intent1);
-//                    intent.putExtra("email",emailCheck);
-//                    email.setText("");
-//                    password.setText("");
-//                Toast.makeText(getActivity(), spinnerComapnires.getSelectedItem().toString(), Toast.LENGTH_SHORT);
+                    }
+
+                }) {
+                    @Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        int i = 0;
+                        params.put("cartype", typecar + "");
+                        params.put("carname", car + "");
+//                        params.put("VehicleRegistration ",);
+                        return params;
+                    }
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+                requestQueue.add(stringRequest);
+
+
             }
         });
 

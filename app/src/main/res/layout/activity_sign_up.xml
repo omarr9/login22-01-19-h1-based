@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginSingup.SignUp"
+    tools:context=".LoginSingup.signUp_mysqlphp"
     android:background="@drawable/background_main"
     android:scrollbars="vertical">
     <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
         <LinearLayout
@@ -120,15 +119,16 @@
                     android:layout_height="2dp"
                     android:background="@android:color/black"/>
             </LinearLayout>
+
             <TextView
                 android:id="@+id/loginAcc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login"
                 android:clickable="true"
-                android:textStyle="bold"
+                android:text="Login"
                 android:textSize="20dp"
-                />
+                android:textStyle="bold"
+                tools:ignore="TouchTargetSizeCheck" />
 
         </LinearLayout>
     </ScrollView>

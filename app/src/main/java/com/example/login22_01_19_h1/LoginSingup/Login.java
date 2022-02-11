@@ -16,6 +16,7 @@ import com.example.login22_01_19_h1.Menu.Navigation_Main;
 import com.example.login22_01_19_h1.R;
 
 public class Login extends AppCompatActivity {
+/*
     EditText email , password;
     Button btnSubmit;
     TextView createAcc;
@@ -77,5 +78,6 @@ public class Login extends AppCompatActivity {
         }
         return false;
     }
+*/
 
 }

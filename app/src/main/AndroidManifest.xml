@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.login22_01_19_h1">
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_app_icon_sec_logo"
         android:label="@string/app_name"
@@ -21,10 +22,10 @@
             android:name=".FinalPage"
             android:exported="false" />
         <activity
-            android:name=".LoginSingup.SignUp"
+            android:name=".LoginSingup.signUp_mysqlphp"
             android:exported="false" />
         <activity
-            android:name=".LoginSingup.Login"
+            android:name=".LoginSingup.Login_MySql"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
