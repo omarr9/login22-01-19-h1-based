@@ -8,28 +8,13 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.login22_01_19_h1.LoginSingup.Login;
 import com.example.login22_01_19_h1.LoginSingup.Login_MySql;
-import com.example.login22_01_19_h1.LoginSingup.SignUp;
 
 //essam
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 //import android.content.Intent;
-import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
-import android.os.Bundle;
 
 import com.example.login22_01_19_h1.LoginSingup.signUp_mysqlphp;
-import com.example.login22_01_19_h1.sliderhome.adapterCard;
-import com.example.login22_01_19_h1.sliderhome.CardHelper;
-import com.example.login22_01_19_h1.sliderhome.car;
-
-import java.util.ArrayList;
-
-import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity  {
     Button login, Reg;
@@ -57,7 +42,7 @@ public class MainActivity extends AppCompatActivity  {
                 startActivity(intent);
             }
         });
-        Reg = findViewById(R.id.btnSignUp);
+        Reg = findViewById(R.id.btnEnter);
         Reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

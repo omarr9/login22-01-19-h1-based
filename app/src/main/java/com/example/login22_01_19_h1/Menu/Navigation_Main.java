@@ -53,7 +53,7 @@ public class Navigation_Main extends AppCompatActivity implements NavigationView
                 break;
             case R.id.nav_history:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new HistoryFragment()).commit();
+                        new BookingFragment()).commit();
                 break;
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

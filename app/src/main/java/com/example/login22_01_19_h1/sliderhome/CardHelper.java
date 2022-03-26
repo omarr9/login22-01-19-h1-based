@@ -16,10 +16,18 @@ public class CardHelper {
         this.color = color;
     }
 
+    public CardHelper() {
+    }
+
+    public CardHelper(String title) {
+        this.title = title;
+    }
+
     public int getImage() {
         return image;
     }
 
+    //
     public String getTitle() {
         return title;
     }
@@ -29,5 +37,15 @@ public class CardHelper {
         return color;
     }
 
+    public void setImage(int image) {
+        this.image = image;
+    }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setColor(GradientDrawable color) {
+        this.color = color;
+    }
 }

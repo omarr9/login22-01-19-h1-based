@@ -12,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -37,7 +37,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class ProfileFragment extends Fragment {
@@ -148,17 +148,7 @@ public class ProfileFragment extends Fragment {
                 String clickedItemType = (clickedItem.getTypeName());
                 typecar = clickedItemType;
 
-//                if (position == 0) {
-//                    mAdapterSecond = new CarItemAdapterSecond(getActivity(), mFordCar);
-//                    typecar = "Ford";
-//
-//
-//                }
-//                if (position == 1) {
-//                    mAdapterSecond = new CarItemAdapterSecond(getActivity(), mHyundaiCar);
-//                    typecar = "Hyundai";
-//
-//                }
+
 
 
             }
@@ -181,33 +171,24 @@ public class ProfileFragment extends Fragment {
                 if (position == 0) {
                     mAdapterSecond = new CarItemAdapterSecond(getActivity(), mFordCar);
                     Company = "Ford";
-//                    textViewResult.setText(car);
-//        String spinText = (String) spinnerComapnires.getSelectedItem();
 
-//                    textViewResult.setText(car+" ");
-//                     spinTextT = textViewResult.getText().toString();
 
                 }
                 if (position == 1) {
                     mAdapterSecond = new CarItemAdapterSecond(getActivity(), mHyundaiCar);
                     Company = "Hyundai";
-//                    textViewResult.setText(car+" ");
-//                    textViewResult.setText(car);
-//                     spinTextT = textViewResult.getText().toString();
+
                 }
                 if (position == 2) {
                     mAdapterSecond = new CarItemAdapterSecond(getActivity(), mMercedesCar);
                     Company = "Mercedes";
-//                    textViewResult.setText(car+" ");
-//                    textViewResult.setText(car);
-//                     spinTextT = textViewResult.getText().toString();
+
                 }
                 if (position == 3) {
                     mAdapterSecond = new CarItemAdapterSecond(getActivity(), mToyotaCar);
                     Company = "Toyota";
-//                    textViewResult.setText(car+" ");
-//
-//                     spinTextT = textViewResult.getText().toString();
+
+
                 }
 
                 spinnerCar.setAdapter(mAdapterSecond);
@@ -239,12 +220,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-//                Toast.makeText(getActivity(), spinnerComapnires.getSelectedItemPosition() + " : Final", Toast.LENGTH_SHORT).show();
-//        TextView textView = (TextView) spinnerComapnires.getSelectedView();
-//        String result = textView.getText().toString();
-//
-//        String spinTextT = textViewResult.getText().toString();
-//        textViewGoal.setText(spinnerComapnires.getSelectedItem().toString());
 
 
         Button bt = getActivity().findViewById(R.id.ButtonSpinnerPage);
@@ -255,19 +230,7 @@ public class ProfileFragment extends Fragment {
                 textViewType.setText(typecar + "");
                 textViewCompany.setText(Company + "");
                 textViewCar.setText(car + "");
-//                int tp  =5;
-//                if (typecar.equalsIgnoreCase("Sedan")) {
-//                tp =0;
-//                }    if (typecar.equalsIgnoreCase("SUV")) {
-//                    tp=1;
-//                }
-//                dbHelper = new DBHelper(getActivity());
-//                if (bt.isPressed()) {
-////                        boolean b = dbHelper.insetCarDataTest(car, typecar, Company, 100);
-//
-//                        boolean b = dbHelper.insetCarData(car, tp, ++counterCarId);
-//                        textViewCar.setText("Done" + "");
-//
+
 //                }
 
 
@@ -323,11 +286,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-//        Toast.makeText(getActivity(), "The Result String : "+Result, Toast.LENGTH_LONG).show();
 
-        //        getSelectedItemPosition()
-
-//        onSaveInstanceState()
     }
 
 
@@ -346,23 +305,6 @@ public class ProfileFragment extends Fragment {
 
     private void carSpinner() {
 
-//        System.out.println("The company is "+ clickedItemCompanyName);
-//        initListCar();
 
-
-//        spinnerCar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                RowItemSecond clickedItem = (RowItemSecond) parent.getItemAtPosition(position);
-//                String clickedCarName = clickedItem.getCarName();
-//                Toast.makeText(getActivity(), clickedCarName + " selected", Toast.LENGTH_SHORT).show();
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
     }
 }
