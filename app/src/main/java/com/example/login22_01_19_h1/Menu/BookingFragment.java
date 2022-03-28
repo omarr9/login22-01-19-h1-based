@@ -1,35 +1,33 @@
 package com.example.login22_01_19_h1.Menu;
 
-//import android.app.Fragment;
-
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
-//import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.login22_01_19_h1.Confirmation_Appointment;
 import com.example.login22_01_19_h1.Constants;
 import com.example.login22_01_19_h1.Dates;
 import com.example.login22_01_19_h1.DatesAdapter;
-import com.example.login22_01_19_h1.MainActivity_Card_Date;
 import com.example.login22_01_19_h1.R;
-import com.example.login22_01_19_h1.sliderhome.CardHelper;
-import com.example.login22_01_19_h1.sliderhome.adapterCard;
 
 
 import org.jetbrains.annotations.Nullable;
@@ -40,18 +38,22 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BookingFragment extends Fragment implements DatesAdapter.OnDateListener {
 
     RecyclerView recyclerView;
     ArrayList<Dates> dates = new ArrayList<>();
     DatesAdapter datesadapter;
-    ArrayList<Button> times;
+    ArrayList<Button> times = new ArrayList<>();
     ViewGroup layout;
     String[][] shcdel;
     int dayposition;
     private ProgressDialog progressDialog;
+    final String[][] calender = new String[50][20];
+
+    boolean boo = false;
 
 
     @Nullable
@@ -63,22 +65,17 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
     }
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
         // Initializing variables
         recyclerView = getView().findViewById(R.id.dates);
         progressDialog = new ProgressDialog(getActivity());
 
-
+        stepone();
         DateRecycler();
-
 
     }
 
-    private void DateRecycler() {
-
-
+    private void stepone() {
         //Onclick listener for all buttons ( 16 )
-        times = new ArrayList<>();
         Button b1 = (Button) getView().findViewById(R.id.b1);
         times.add(b1);
         Button b2 = (Button) getView().findViewById(R.id.b2);
@@ -119,81 +116,102 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
                     for (int i = 0; i < times.size(); i++) {
                         if (view.getId() == times.get(i).getId()) {
                             appointmentInfo(times.get(i));
-
-
                         }
-
                     }
-
                 }
             });
         }
+    }
 
+    private void DateRecycler() {
 
-        // create the arrays of data
-        // it should bring it from DATABASE
-        String[] textdate = {"12/12/2022", "13/12/2022", "14/12/2022", "15/12/2022", "16/12/2022", "17/12/2022", "18/12/2022"};
-        String[] daysname = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-        String[] timing = {"8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM"};
-        String[] timing2 = {"9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:30 AM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "4:00 PM", "4:30 PM"};
-        shcdel = new String[][]{
-                {"Sunday", "8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM"},
-                {"Monday", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:30 AM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "4:00 PM", "4:30 PM"},
-                {"Tuesday", "9:30 AM", "10:00 AM", "10:30 AM", "11:30 AM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "4:00 PM", "4:30 PM"},
-                {"Wednesday", "9:00 AM", "9:30 AM", "11:30 AM", "1:00 PM", "1:30 PM", "4:00 PM", "4:30 PM"},
-                {"Thursday", "9:00 AM", "9:30 AM", "2:30 PM", "3:00 PM", "4:00 PM", "4:30 PM"},
-                {"Friday", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:30 AM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "4:00 PM", "4:30 PM"},
-                {"Saturday", "9:00 AM", "10:00 AM", "10:30 AM", "11:30 AM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "4:00 PM", "4:30 PM"}};
-
-        // Retrive Data From Database
-
+        System.out.println("Test Mes -------- Making stringRequest ");
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SCHEDULE_RETRIVE, new Response.Listener<String>() {
-
             @Override
             public void onResponse(String json_re) {
+                System.out.println("Test Mes -------- onResponse");
                 progressDialog.dismiss();
-
-
                 JSONArray jsonArray = null;
+                //Essam
                 try {
                     jsonArray = new JSONArray(json_re);
                     JSONObject jsonResponse = jsonArray.getJSONObject(0);
-                    dates.clear();
-                    JSONArray jsonArray_carS = jsonResponse.getJSONArray("response");
-
-                    for (int i = 0; i < jsonArray_carS.length(); i++) {
+//                    dates.clear();
+                    JSONArray jsonArray_carS = jsonResponse.getJSONArray("schedInfo");
+//                    Log.println(Log.ASSERT, "jsonArray_carS", jsonArray_carS.toString());
+                    System.out.println("Testing ---------------------  onResponse 2");
+                    for (int i = 0; i < jsonArray_carS.length() && i < 160; i++) {
+                        System.out.println("--------lenght : " + jsonArray_carS.length());
                         JSONObject responsS = jsonArray_carS.getJSONObject(i);
                         String DateString = responsS.getString("date").trim();
+                        String TimeString = responsS.getString("Time").trim();
                         String DayString = responsS.getString("Day").trim();
-                        Log.println(Log.ASSERT, "DateString", DateString);
-                        Log.println(Log.ASSERT, "DayString", DayString);
+                        String Avaliable = responsS.getString("Avilibality").trim();
 
+//                        Log.println(Log.ASSERT, "DateString", DateString);
+//                        Log.println(Log.ASSERT, "DayString", DayString);
+                        //Essam
+                        System.out.println("Testing ---------------------  onResponse 3");
 
-//                        StrArr[i] = carNameString;
-//
-//
-//                        if (carTypeString.equalsIgnoreCase("Sedan")) {
-//                            cards.add(new CardHelper(gradient2, R.drawable.car, carNameString));
-//                        }else{
-//                            cards.add(new CardHelper(gradient3, R.drawable.suvcar,carNameString ));
-//
-//                        }
+                        if (Avaliable.equalsIgnoreCase("Avaliable")) {
+                            if (calender[0][0] == null) {
+                                calender[0][0] = DayString;
+                                calender[0][1] = DateString;
+                                calender[0][2] = TimeString;
+                                System.out.println("Testing --------------------- inside if");
+                            } else {
+                                boolean check = false;
+                                int k = 0;
+                                for (k = 0; k < calender.length; k++) {
+                                    if (calender[k][1] == null) {
+                                        check = false;
+                                        break;
+                                    } else if (calender[k][1].equalsIgnoreCase(DateString)) {
+                                        check = true;
+                                        break;
+                                    }
+                                }
 
-//                        Log.println(Log.ASSERT, "ARRAY SSS",StrArr[i]+" ");
-//
-//                        adapter = new adapterCard(cards, HomeFragment.this);
-//                        carRecycler.setAdapter(adapter);
-//                        carRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                                if (check == true) {
+                                    int len2;
+                                    for (len2 = 0; len2 < calender[k].length; len2++) {
+                                        if (calender[k][len2] == null) {
+                                            break;
+                                        }
+                                    }
+                                    calender[k][len2] = TimeString;
+                                } else {
+                                    calender[k][0] = DayString;
+                                    calender[k][1] = DateString;
+                                    calender[k][2] = TimeString;
+                                }
+                                System.out.println("Testing --------------------- inside else if");
+                            }
+                        } else {
+                            System.out.println("Testing ---------------------  not Avaliable");
 
+                        }
                     }
-
-
                 } catch (JSONException e) {
+                    System.out.println("Testing ---------------------  JSONException Error");
                     e.printStackTrace();
                 }
 
+                //for testin :
+                if (calender == null) {
+                    System.out.println("Error ----------- Attempt to read from null array");
+                } else {
+                    for (int i = 0; i < calender.length; i++) { //this equals to the row in our matrix.
+                        for (int j = 0; j < calender[i].length; j++) { //this equals to the column in each row.
+                            System.out.print(calender[i][j] + " ");
+                        }
+                        System.out.println(); //change line on console as row comes to end in the matrix.
+                    }
+                }
 
+                System.out.println("Test Mes -------- Calling laststep");
+                laststep();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -205,32 +223,43 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
 
         }) {
 
+
+            @androidx.annotation.Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                int i = 0;
+//                params.put("Booked",  "1");
+
+
+                return params;
+            }
         };
+
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         requestQueue.add(stringRequest);
 
 
-        // adding the dates into the arry
-        for (int i = 0; i < textdate.length; i++) {
-            Dates date = new Dates(textdate[i], daysname[i]);
+        System.out.println("Testing Done !! ----- ");
+    }
+
+    public void laststep() {
+        for (int i = 0; i < calender.length && calender[i][0] != null; i++) {
+            Dates date = new Dates(calender[i][1], calender[i][0]);
+            //Dates date = new Dates(textdate[i], daysname[i]);
             dates.add(date);
         }
-
-
         // design herozintal layout
-
         // Initialize dateAdapter
         datesadapter = new DatesAdapter(dates, this);
         // set dateadapter to recyclerView
         recyclerView.setAdapter(datesadapter);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         // hide all time
         layout = (ViewGroup) getView().findViewById(R.id.layout_container_buttons);
         for (int i = 0; i < layout.getChildCount(); i++) {
-
             View child = layout.getChildAt(i);
             if (child instanceof Button) {
                 Button button = (Button) child;
@@ -238,9 +267,6 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
                 button.setVisibility(View.GONE);
             }
         }
-
-        // Set the times from the arrat
-
     }
 
 
@@ -248,12 +274,11 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
     public void onDateClick(int position) {
         dayposition = position;
         clearbuttons();
-        for (int i = 0; i < layout.getChildCount() && i < shcdel[position].length - 1; i++) {
-
+        for (int i = 0; i < layout.getChildCount() && calender[position][i + 2] != null; i++) {
             View child = layout.getChildAt(i);
             if (child instanceof Button) {
                 Button button = (Button) child;
-                button.setText(shcdel[position][i + 1]);
+                button.setText(calender[position][i + 2]);
                 button.setVisibility(View.VISIBLE);
             }
         }
@@ -261,7 +286,6 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
 
     public void clearbuttons() {
         for (int i = 0; i < layout.getChildCount(); i++) {
-
             View child = layout.getChildAt(i);
             if (child instanceof Button) {
                 Button button = (Button) child;
@@ -272,22 +296,91 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
     }
 
     public void appointmentInfo(Button button) {
-        System.out.println("The date is : " + shcdel[dayposition][0]);
-        System.out.println("The time is : " + button.getText());
+        System.out.println("--------- Appointment Info --------------");
+        System.out.println("The Day is : " + calender[dayposition][0]);
+        System.out.println("The Date is : " + calender[dayposition][1]);
+        System.out.println("The Time is : " + button.getText());
+
+//        Button confirm = (Button) getActivity().findViewById(R.id.Confirm);
+        TextView txVAppointmentInfo = (TextView) getView().findViewById(R.id.ConfirmText);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SCHEDULE_Update, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String json_re) {
+                System.out.println("Test Mes -------- onResponse");
+                progressDialog.dismiss();
+                JSONArray jsonArray = null;
+                //Essam
+//                try {
+////                    JSONObject jsonResponse = jsonArray.getJSONObject(0);
+//              } catch (JSONException e) {
+//                    System.out.println("Testing ---------------------  JSONException Error");
+//                    e.printStackTrace();
+//                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.hide();
+//                        Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+
+        }) {
+
+
+            @androidx.annotation.Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                Button confirm = getActivity().findViewById(R.id.Confirm);
+
+                int i = 0;
+                System.out.println("The Day is : " + calender[dayposition][0]);
+                System.out.println("The Date is : " + calender[dayposition][1]);
+                System.out.println("The Time is : " + button.getText());
+                Log.println(Log.ASSERT, "TOST", "Your Appintment On " + calender[dayposition][0] + "  " + calender[dayposition][1] + " \n At  " + button.getText() + "");
+
+
+                if (confirm.isPressed() == true) {
+                    params.put("date", calender[dayposition][1]);
+                    params.put("Time", button.getText().toString());
+
+                }
+
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.stop();
+        requestQueue.add(stringRequest);
+
+        Button confirm = (Button) getActivity().findViewById(R.id.Confirm);
+
+
+        if (button.isPressed()) {
+            txVAppointmentInfo.setText("Your Appintment On " + calender[dayposition][0] + "  " + calender[dayposition][1] + " \n At  " + button.getText() + "");
+        }
+        requestQueue.start();
+
+
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getActivity(), Confirmation_Appointment.class);
+                intent.putExtra("Day", calender[dayposition][0]);
+                intent.putExtra("Date", calender[dayposition][1]);
+                intent.putExtra("Time", button.getText().toString());
+
+                startActivity(intent);
+
+
+            }
+        });
+
 
     }
-//        public void onClick (View view){
-//            for (int i = 0; i < times.size(); i++) {
-//                if (view.getId() == times.get(i).getId()) {
-//                    appointmentInfo(times.get(i));
-//
-//
-//                }
-//
-//            }
-//
-//        }
 
 }
-
-

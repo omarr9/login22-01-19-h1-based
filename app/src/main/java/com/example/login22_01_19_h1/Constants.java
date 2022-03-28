@@ -9,6 +9,7 @@ public class Constants {
  public static final String URL_USERCARS = ROOT_URL + "UserCars.php";
  public static final String URL_CARS_RETRIVE = ROOT_URL + "retiveCarInfo.php";
  public static final String URL_SCHEDULE_RETRIVE = ROOT_URL + "ScheduleOfMaint.php";
+ public static final String URL_SCHEDULE_Update = ROOT_URL + "InsertAppointment.php";
 
 
 }

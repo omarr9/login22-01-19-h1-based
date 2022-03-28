@@ -102,7 +102,7 @@ public class Login_MySql extends AppCompatActivity implements View.OnClickListen
         createAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Login_MySql.this, SignUp.class);
+                Intent intent = new Intent(Login_MySql.this, signUp_mysqlphp.class);
                 startActivity(intent);
             }
         });
