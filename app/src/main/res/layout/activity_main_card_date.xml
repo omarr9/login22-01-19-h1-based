@@ -28,9 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:layout_editor_absoluteX="16dp">
 
-
     </androidx.recyclerview.widget.RecyclerView>
-
 
     <RelativeLayout
         android:id="@+id/layout_container_buttons"
@@ -42,12 +40,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dates">
 
-
         <Button
             android:id="@+id/b1"
             android:layout_width="75dp"
             android:layout_height="60dp"
             android:layout_marginLeft="10dp"
+
+
             android:text="8:00 AM"></Button>
 
         <Button
@@ -182,46 +181,33 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/b15"
             android:text="4:30 PM"></Button>
-
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/layout_container_done_buttons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
+    <TextView
+        android:id="@+id/feedback"
+        android:layout_width="335dp"
+        android:layout_height="69dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="124dp"
+        android:text="FeedBack"
+        android:textSize="16sp"
+        android:textColor="@color/redbutton"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="150dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="40dp"
+        android:text="Confirm !"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_container_buttons">
-
-
-        <TextView
-            android:id="@+id/ConfirmText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/Confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="80dp"
-            android:layout_marginRight="18dp"
-            android:gravity="center"
-            android:text="CONFIRM"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-
-    </RelativeLayout>
+        android:textAllCaps="false"></Button>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,8 @@ package com.example.login22_01_19_h1.Menu;
 //import android.app.Fragment;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,9 @@ import android.widget.TextView;
 
 //import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,6 +49,7 @@ public class HomeFragment extends Fragment implements adapterCard.ListItemClickL
     DBHelper dbHelper;
     ArrayList<String> carname, cartype, carid;
     //CustomAdapter customAdapter;
+    String carIdString;
 
     RecyclerView carRecycler;
     RecyclerView.Adapter adapter;
@@ -117,11 +123,11 @@ public class HomeFragment extends Fragment implements adapterCard.ListItemClickL
                         JSONObject responsS = jsonArray_carS.getJSONObject(i);
                         String carNameString = responsS.getString("carname").trim();
                         String carTypeString = responsS.getString("cartype").trim();
+                        carIdString = responsS.getString("ID").trim();
+
                         Log.println(Log.ASSERT, "carNameString", carNameString);
                         Log.println(Log.ASSERT, "carTypeString", carTypeString);
-
-
-                        StrArr[i] = carNameString;
+                        Log.println(Log.ASSERT, "carIDString", carIdString);
 
 
                         if (carTypeString.equalsIgnoreCase("Sedan")) {
@@ -131,7 +137,6 @@ public class HomeFragment extends Fragment implements adapterCard.ListItemClickL
 
                         }
 
-                        Log.println(Log.ASSERT, "ARRAY SSS", StrArr[i] + " ");
 
                         adapter = new adapterCard(cards, HomeFragment.this);
                         carRecycler.setAdapter(adapter);
@@ -178,24 +183,39 @@ public class HomeFragment extends Fragment implements adapterCard.ListItemClickL
 
     }
 
+
     @Override
-    public void onphoneListClick(int clickedItemIndex) {
+    public void onphoneListClick(int clickedItemIndex, String s) {
+
+        Intent mIntent;
+//        switch (clickedItemIndex){
+//            case 0: //first item in Recycler view
+
+//
+
+
+        // To pass some value from FragmentA
+
+        Log.println(Log.ASSERT, "carIDInsideMethod", "" + s);
+        BookingFragment fragment = new BookingFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("VALUE", s);
+        fragment.setArguments(bundle);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+
 
     }
 
 
-    /*@Override
-    public void onphoneListClick(int clickedItemIndex) {
+//                mIntent  = new Intent(HomeFragment.this, NavHostFragment.findNavController(BookingFragment));
+//                startActivity(mIntent);
+//                break;
 
-        Intent mIntent;
-        switch (clickedItemIndex){
-            case 0: //first item in Recycler view
-                mIntent  = new Intent(SettingsFragment.this, car.class);
-                startActivity(mIntent);
-                break;
-
-        }
+//        }
 
 
-    }*/
 }

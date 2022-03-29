@@ -1,7 +1,7 @@
 package com.example.login22_01_19_h1.Menu;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -23,7 +24,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.login22_01_19_h1.Confirmation_Appointment;
 import com.example.login22_01_19_h1.Constants;
 import com.example.login22_01_19_h1.Dates;
 import com.example.login22_01_19_h1.DatesAdapter;
@@ -51,10 +51,9 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
     String[][] shcdel;
     int dayposition;
     private ProgressDialog progressDialog;
-    final String[][] calender = new String[50][20];
-
-    boolean boo = false;
-
+    String[][] calender = new String[50][20];
+    TextView feedback;
+    Button confirm;
 
     @Nullable
     @Override
@@ -76,37 +75,37 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
 
     private void stepone() {
         //Onclick listener for all buttons ( 16 )
-        Button b1 = (Button) getView().findViewById(R.id.b1);
+        Button b1 = getView().findViewById(R.id.b1);
         times.add(b1);
-        Button b2 = (Button) getView().findViewById(R.id.b2);
+        Button b2 = getView().findViewById(R.id.b2);
         times.add(b2);
-        Button b3 = (Button) getView().findViewById(R.id.b3);
+        Button b3 = getView().findViewById(R.id.b3);
         times.add(b3);
-        Button b4 = (Button) getView().findViewById(R.id.b4);
+        Button b4 = getView().findViewById(R.id.b4);
         times.add(b4);
-        Button b5 = (Button) getView().findViewById(R.id.b5);
+        Button b5 = getView().findViewById(R.id.b5);
         times.add(b5);
-        Button b6 = (Button) getView().findViewById(R.id.b6);
+        Button b6 = getView().findViewById(R.id.b6);
         times.add(b6);
-        Button b7 = (Button) getView().findViewById(R.id.b7);
+        Button b7 = getView().findViewById(R.id.b7);
         times.add(b7);
-        Button b8 = (Button) getView().findViewById(R.id.b8);
+        Button b8 = getView().findViewById(R.id.b8);
         times.add(b8);
-        Button b9 = (Button) getView().findViewById(R.id.b9);
+        Button b9 = getView().findViewById(R.id.b9);
         times.add(b9);
-        Button b10 = (Button) getView().findViewById(R.id.b10);
+        Button b10 = getView().findViewById(R.id.b10);
         times.add(b10);
-        Button b11 = (Button) getView().findViewById(R.id.b11);
+        Button b11 = getView().findViewById(R.id.b11);
         times.add(b11);
-        Button b12 = (Button) getView().findViewById(R.id.b12);
+        Button b12 = getView().findViewById(R.id.b12);
         times.add(b12);
-        Button b13 = (Button) getView().findViewById(R.id.b13);
+        Button b13 = getView().findViewById(R.id.b13);
         times.add(b13);
-        Button b14 = (Button) getView().findViewById(R.id.b14);
+        Button b14 = getView().findViewById(R.id.b14);
         times.add(b14);
-        Button b15 = (Button) getView().findViewById(R.id.b15);
+        Button b15 = getView().findViewById(R.id.b15);
         times.add(b15);
-        Button b16 = (Button) getView().findViewById(R.id.b16);
+        Button b16 = getView().findViewById(R.id.b16);
         times.add(b16);
 
         for (int i = 0; i < times.size(); i++) {
@@ -121,10 +120,23 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
                 }
             });
         }
+
+        feedback = getView().findViewById(R.id.feedback);
+        confirm = getView().findViewById(R.id.confirm);
+        feedback.setText("");
+        confirm.setVisibility(View.GONE);
+        confirm.setTextColor(Color.parseColor("#ffffff"));
+        confirm.setBackground(getActivity().getResources().getDrawable(R.drawable.buttondesign));
     }
 
     private void DateRecycler() {
 
+
+        Bundle bun = getArguments();
+        if (bun != null) {
+            String value = bun.getString("VALUE");
+            Log.println(Log.ASSERT, "value :", "" + value);
+        }
         System.out.println("Test Mes -------- Making stringRequest ");
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SCHEDULE_RETRIVE, new Response.Listener<String>() {
@@ -139,7 +151,7 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
                     JSONObject jsonResponse = jsonArray.getJSONObject(0);
 //                    dates.clear();
                     JSONArray jsonArray_carS = jsonResponse.getJSONArray("schedInfo");
-//                    Log.println(Log.ASSERT, "jsonArray_carS", jsonArray_carS.toString());
+                    Log.println(Log.ASSERT, "jsonArray_carS", jsonArray_carS.toString());
                     System.out.println("Testing ---------------------  onResponse 2");
                     for (int i = 0; i < jsonArray_carS.length() && i < 160; i++) {
                         System.out.println("--------lenght : " + jsonArray_carS.length());
@@ -149,8 +161,8 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
                         String DayString = responsS.getString("Day").trim();
                         String Avaliable = responsS.getString("Avilibality").trim();
 
-//                        Log.println(Log.ASSERT, "DateString", DateString);
-//                        Log.println(Log.ASSERT, "DayString", DayString);
+                        Log.println(Log.ASSERT, "DateString", DateString);
+                        Log.println(Log.ASSERT, "DayString", DayString);
                         //Essam
                         System.out.println("Testing ---------------------  onResponse 3");
 
@@ -230,15 +242,13 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
                 Map<String, String> params = new HashMap<>();
                 int i = 0;
 //                params.put("Booked",  "1");
-
-
                 return params;
             }
         };
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         requestQueue.add(stringRequest);
-
+        requestQueue.start();
 
         System.out.println("Testing Done !! ----- ");
     }
@@ -258,15 +268,18 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         // hide all time
-        layout = (ViewGroup) getView().findViewById(R.id.layout_container_buttons);
+        layout = getView().findViewById(R.id.layout_container_buttons);
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
             if (child instanceof Button) {
                 Button button = (Button) child;
                 button.setText("");
+                button.setBackgroundTintList(getActivity().getColorStateList(R.color.buttoncolors));
+                //button.setBackgroundResource(android.R.drawable.btn_default);
                 button.setVisibility(View.GONE);
             }
         }
+
     }
 
 
@@ -279,108 +292,99 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
             if (child instanceof Button) {
                 Button button = (Button) child;
                 button.setText(calender[position][i + 2]);
+//                int drawable = R.drawable.red_button_border;
+//                button.setBackgroundResource(drawable);
                 button.setVisibility(View.VISIBLE);
             }
         }
     }
 
     public void clearbuttons() {
+        confirm.setVisibility(View.GONE);
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
             if (child instanceof Button) {
                 Button button = (Button) child;
                 button.setText("");
+                button.setSelected(false);
+                button.setTextColor(Color.parseColor("#000000"));
                 button.setVisibility(View.GONE);
             }
         }
     }
 
     public void appointmentInfo(Button button) {
+        resetcolors();
+        boolean aviliblity = false;
+        feedback.setText("");
+        //button.setBackgroundColor(Color.parseColor("#87431D"));
+        button.setSelected(true);
+        button.setTextColor(Color.parseColor("#ffffff"));
+        confirm.setVisibility(View.VISIBLE);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+                // check aviliblity first usnig php requset with lock
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SCHEDULE_Update, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        if (response.contains("Done")) {
+                            System.out.println("--------------------Done -----------");
+                            Toast.makeText(getContext(), "Thanks!", Toast.LENGTH_LONG).show();
+                            //take him to next page
+                        } else {
+                            System.out.println("--------------------Full sorry -----------");
+                            Toast.makeText(getContext(), "Sorry! The requested time has already been filled, the available times have been updated, please rebook", Toast.LENGTH_LONG).show();
+                            refresh();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.hide();
+                    }
+
+                }) {
+                    @androidx.annotation.Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        System.out.println("Test Mes -------- edit database");
+                        Map<String, String> params = new HashMap<>();
+                        params.put("date", calender[dayposition][1]);
+                        params.put("Time", button.getText().toString());
+                        return params;
+                    }
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+                requestQueue.add(stringRequest);
+
+            }
+        });
         System.out.println("--------- Appointment Info --------------");
         System.out.println("The Day is : " + calender[dayposition][0]);
         System.out.println("The Date is : " + calender[dayposition][1]);
         System.out.println("The Time is : " + button.getText());
-
-//        Button confirm = (Button) getActivity().findViewById(R.id.Confirm);
-        TextView txVAppointmentInfo = (TextView) getView().findViewById(R.id.ConfirmText);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SCHEDULE_Update, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String json_re) {
-                System.out.println("Test Mes -------- onResponse");
-                progressDialog.dismiss();
-                JSONArray jsonArray = null;
-                //Essam
-//                try {
-////                    JSONObject jsonResponse = jsonArray.getJSONObject(0);
-//              } catch (JSONException e) {
-//                    System.out.println("Testing ---------------------  JSONException Error");
-//                    e.printStackTrace();
-//                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.hide();
-//                        Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-
-            }
-
-        }) {
-
-
-            @androidx.annotation.Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                Button confirm = getActivity().findViewById(R.id.Confirm);
-
-                int i = 0;
-                System.out.println("The Day is : " + calender[dayposition][0]);
-                System.out.println("The Date is : " + calender[dayposition][1]);
-                System.out.println("The Time is : " + button.getText());
-                Log.println(Log.ASSERT, "TOST", "Your Appintment On " + calender[dayposition][0] + "  " + calender[dayposition][1] + " \n At  " + button.getText() + "");
-
-
-                if (confirm.isPressed() == true) {
-                    params.put("date", calender[dayposition][1]);
-                    params.put("Time", button.getText().toString());
-
-                }
-
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.stop();
-        requestQueue.add(stringRequest);
-
-        Button confirm = (Button) getActivity().findViewById(R.id.Confirm);
-
-
-        if (button.isPressed()) {
-            txVAppointmentInfo.setText("Your Appintment On " + calender[dayposition][0] + "  " + calender[dayposition][1] + " \n At  " + button.getText() + "");
-        }
-        requestQueue.start();
-
-
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(getActivity(), Confirmation_Appointment.class);
-                intent.putExtra("Day", calender[dayposition][0]);
-                intent.putExtra("Date", calender[dayposition][1]);
-                intent.putExtra("Time", button.getText().toString());
-
-                startActivity(intent);
-
-
-            }
-        });
-
-
     }
 
+    public void resetcolors() {
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View child = layout.getChildAt(i);
+            if (child instanceof Button) {
+                Button button = (Button) child;
+                button.setSelected(false);
+                button.setTextColor(Color.parseColor("#000000"));
+            }
+        }
+    }
+
+    public void refresh() {
+        calender = null;
+        calender = new String[50][20];
+        DateRecycler();
+    }
+
+
 }
+
+

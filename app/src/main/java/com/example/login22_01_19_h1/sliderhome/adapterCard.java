@@ -74,7 +74,7 @@ public class adapterCard extends RecyclerView.Adapter<adapterCard.PhoneViewHold>
     }
 
     public interface ListItemClickListener {
-        void onphoneListClick(int clickedItemIndex);
+        void onphoneListClick(int clickedItemIndex, String title);
     }
 
     public class PhoneViewHold extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -103,7 +103,7 @@ public class adapterCard extends RecyclerView.Adapter<adapterCard.PhoneViewHold>
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
-            mOnClickListener.onphoneListClick(clickedPosition);
+            mOnClickListener.onphoneListClick(clickedPosition, title.getText().toString());
         }
     }
 

@@ -28,7 +28,7 @@ public class Navigation_Main extends AppCompatActivity implements NavigationView
         setSupportActionBar(toolbar1);
 
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -88,4 +88,5 @@ public class Navigation_Main extends AppCompatActivity implements NavigationView
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+
 }
