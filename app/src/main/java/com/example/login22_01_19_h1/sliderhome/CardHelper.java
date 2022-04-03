@@ -8,12 +8,14 @@ public class CardHelper {
 
     int image;
     String title;
-    GradientDrawable color;
+    String company;
+    int id;
 
-    public CardHelper(GradientDrawable color, int image, String title) {
+    public CardHelper( int image,String company, String title, int id) {
         this.image = image;
         this.title = title;
-        this.color = color;
+        this.company = company;
+        this.id = id;
     }
 
     public CardHelper() {
@@ -27,14 +29,14 @@ public class CardHelper {
         return image;
     }
 
-    //
     public String getTitle() {
         return title;
     }
-
-
-    public Drawable getgradient() {
-        return color;
+    public String getCompany() {
+        return company;
+    }
+    public Integer getid() {
+        return id;
     }
 
     public void setImage(int image) {
@@ -45,7 +47,4 @@ public class CardHelper {
         this.title = title;
     }
 
-    public void setColor(GradientDrawable color) {
-        this.color = color;
-    }
 }

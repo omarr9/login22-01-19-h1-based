@@ -8,65 +8,161 @@
     android:background="#F7FFFFFF"
     tools:context=".MainActivity">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:background="#F7FFFFFF"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+
+        <Button
+            android:id="@+id/Next"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="600dp"
+            android:layout_marginLeft="150dp"
+            android:background="@color/orange"
+            android:backgroundTint="@color/orange"
+            android:fontFamily="sans-serif-black"
+            android:padding="10dp"
+            android:text="NexT"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:background="#F7FFFFFF"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:layout_marginTop="1dp"
                 android:orientation="vertical">
 
-
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:ignore="UselessParent">
+                    android:padding="20dp"
+                    android:layout_marginTop="1dp"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/all_phones"
-                        android:textAllCaps="true"
-                        android:textSize="34sp" />
+                        tools:ignore="UselessParent">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/view_all"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
-                        tools:ignore="RelativeOverlap" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/all_phones"
+                            android:textAllCaps="true"
+                            android:textSize="34sp" />
 
 
-                </RelativeLayout>
+                        <Button
+                            android:id="@+id/addnewcar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            tools:ignore="RelativeOverlap"
+                            android:text="Add new car"
+                            style="@style/Widget.MaterialComponents.Button.TextButton" />
 
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/my_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+
+                    </RelativeLayout>
 
 
-                </androidx.recyclerview.widget.RecyclerView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/my_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+
+                </LinearLayout>
 
 
             </LinearLayout>
 
+        </ScrollView>
 
-        </LinearLayout>
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="270dp"
+            android:background="#F7FFFFFF">
 
-    </ScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:ignore="UselessParent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Upcoming Appintment"
+                            android:textAllCaps="false"
+                            android:textSize="28sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:contextClickable="true"
+                            android:text="@string/view_all"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:ignore="RelativeOverlap" />
+
+
+                    </RelativeLayout>
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/upcoming_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/addcarmes"
+            android:width="280dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:layout_marginTop="100dp"
+            android:layout_marginLeft="60dp"/>
+
+
+    </RelativeLayout>
+
 
 
 </LinearLayout>

@@ -48,7 +48,7 @@ public class CompanyItemAdapter extends ArrayAdapter<RowItem> {
             RowItem currentItem = getItem(position);
 
             if (currentItem != null) {
-                imageViewBrand.setImageResource(currentItem.getBrandImage());
+                imageViewBrand.setImageBitmap(currentItem.getBrandImage());
                 textViewName.setText(currentItem.getCompanyName());
             }
 

@@ -48,7 +48,7 @@ public class TypeItemAdapter extends ArrayAdapter<RowItemType> {
             RowItemType currentItem = getItem(position);
 
             if (currentItem != null) {
-                imageViewBrand.setImageResource(currentItem.getTypeImage());
+                //imageViewBrand.setImageResource(currentItem.getTypeImage());
                 textViewName.setText(currentItem.getTypeName());
             }
 

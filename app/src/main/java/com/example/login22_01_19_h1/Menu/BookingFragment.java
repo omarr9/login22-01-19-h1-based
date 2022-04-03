@@ -28,6 +28,7 @@ import com.example.login22_01_19_h1.Constants;
 import com.example.login22_01_19_h1.Dates;
 import com.example.login22_01_19_h1.DatesAdapter;
 import com.example.login22_01_19_h1.R;
+import com.example.login22_01_19_h1.RequestHandlerSingleton;
 
 
 import org.jetbrains.annotations.Nullable;
@@ -246,9 +247,11 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.add(stringRequest);
-        requestQueue.start();
+//        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+//        requestQueue.add(stringRequest);
+//        requestQueue.start();
+
+        RequestHandlerSingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
 
         System.out.println("Testing Done !! ----- ");
     }
@@ -356,8 +359,13 @@ public class BookingFragment extends Fragment implements DatesAdapter.OnDateList
                         return params;
                     }
                 };
-                RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-                requestQueue.add(stringRequest);
+
+
+//                RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+//                requestQueue.add(stringRequest);
+
+                RequestHandlerSingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+
 
             }
         });

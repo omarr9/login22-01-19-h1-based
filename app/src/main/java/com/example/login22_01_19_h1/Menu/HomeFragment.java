@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,7 +31,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.login22_01_19_h1.Constants;
 import com.example.login22_01_19_h1.DBHelper;
+import com.example.login22_01_19_h1.MainActivityNotification;
 import com.example.login22_01_19_h1.R;
+import com.example.login22_01_19_h1.RequestHandlerSingleton;
+import com.example.login22_01_19_h1.SharedPrefManger;
 import com.example.login22_01_19_h1.sliderhome.CardHelper;
 import com.example.login22_01_19_h1.sliderhome.adapterCard;
 
@@ -46,21 +50,17 @@ public class HomeFragment extends Fragment implements adapterCard.ListItemClickL
     @Nullable
     TextView carnameview;
     ImageView imgtypeview;
-    DBHelper dbHelper;
     ArrayList<String> carname, cartype, carid;
-    //CustomAdapter customAdapter;
     String carIdString;
+    Button addnewcar;
+    Button button;
+
 
     RecyclerView carRecycler;
     RecyclerView.Adapter adapter;
 
     private ProgressDialog progressDialog;
     ArrayList<CardHelper> cards = new ArrayList<>();
-    GradientDrawable gradient1;
-    GradientDrawable gradient2;
-    GradientDrawable gradient3;
-    GradientDrawable gradient4;
-
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
@@ -68,7 +68,31 @@ public class HomeFragment extends Fragment implements adapterCard.ListItemClickL
         carRecycler = getView().findViewById(R.id.my_recycler);
         progressDialog = new ProgressDialog(getActivity());
 
-        phoneRecycler();
+        button = getView().findViewById(R.id.Next);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                //************** Important For Enable The Notifications ***********************************
+ //                Intent intent = new Intent(getActivity(), MainActivityNotification.class);
+//                startActivity(intent);
+
+                //************** It's The Way To Move From One Fragment To Another  ***********************************
+
+                CentersFragment fragment = new CentersFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putString("VALUE", s);
+//        fragment.setArguments(bundle);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+
+            }
+        });
+
+        getcars();
 
     }
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,40 +100,19 @@ public class HomeFragment extends Fragment implements adapterCard.ListItemClickL
 
     }
 
-    private void phoneRecycler() {
-
-        //All Gradients
-        gradient2 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xffd4cbe5, 0xffd4cbe5});
-        gradient1 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xff7adccf, 0xff7adccf});
-        gradient3 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xfff7c59f, 0xFFf7c59f});
-        gradient4 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xffb8d7f5, 0xffb8d7f5});
-
-
+    private void getcars() {
         cards.clear();
-
-        cards.add(new CardHelper("Mazda"));
-
-
-        ////////////
-        imgtypeview = getView().findViewById(R.id.car_image);
+        //cards.add(new CardHelper("Mazda"));
+        //imgtypeview = getView().findViewById(R.id.car_image);
 
         carname = new ArrayList<>();
         cartype = new ArrayList<>();
-
-
-        System.out.println("test : " + cartype.size());
-
-
-        ArrayList<String> myString = new ArrayList<>();
-        String[] StrArr = new String[6];
-
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_CARS_RETRIVE, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String json_re) {
                 progressDialog.dismiss();
-
 
                 JSONArray jsonArray = null;
                 try {
@@ -119,36 +122,36 @@ public class HomeFragment extends Fragment implements adapterCard.ListItemClickL
                     cartype.clear();
                     JSONArray jsonArray_carS = jsonResponse.getJSONArray("carnInfo");
 
+                    System.out.println(jsonArray_carS.length());
                     for (int i = 0; i < jsonArray_carS.length(); i++) {
                         JSONObject responsS = jsonArray_carS.getJSONObject(i);
+                        System.out.println("here is the output : "+responsS);
+                        int carid = Integer.parseInt(responsS.getString("id").trim());
+                        String carCompany = responsS.getString("carCompany").trim();
                         String carNameString = responsS.getString("carname").trim();
                         String carTypeString = responsS.getString("cartype").trim();
-                        carIdString = responsS.getString("ID").trim();
-
-                        Log.println(Log.ASSERT, "carNameString", carNameString);
-                        Log.println(Log.ASSERT, "carTypeString", carTypeString);
-                        Log.println(Log.ASSERT, "carIDString", carIdString);
-
+                        System.out.println("Testing -------------------- here" + carTypeString);
+                        //carIdString = responsS.getString("ID").trim();
 
                         if (carTypeString.equalsIgnoreCase("Sedan")) {
-                            cards.add(new CardHelper(gradient2, R.drawable.car, carNameString));
+                            cards.add(new CardHelper( R.drawable.car, carCompany , carNameString, carid));
                         } else {
-                            cards.add(new CardHelper(gradient3, R.drawable.suvcar, carNameString));
-
+                            cards.add(new CardHelper( R.drawable.suvcar, carCompany , carNameString, carid));
                         }
-
 
                         adapter = new adapterCard(cards, HomeFragment.this);
                         carRecycler.setAdapter(adapter);
                         carRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
                     }
-
-
                 } catch (JSONException e) {
+                    //you dont have any card, add new crad
+                    TextView addcarmes = getView().findViewById(R.id.addcarmes);
+                    //Button add new car
+                    addcarmes.setText("Oh it seems you didn't add any car yet , you can add new car from the plus sign");
                     e.printStackTrace();
                 }
-
+                System.out.println("Testing -------------------- 4");
 
             }
         }, new Response.ErrorListener() {
@@ -162,50 +165,50 @@ public class HomeFragment extends Fragment implements adapterCard.ListItemClickL
         }) {
 
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.add(stringRequest);
-
-        Log.println(Log.ASSERT, "CarType||size", cartype.size() + "");
-        for (int i = 0; cartype.size() > i; i++) { // ******************************Return it to car TypE *********************
-
-        }
-
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////
-        System.out.println("/n cards size " + cards.size());
-        adapter = new adapterCard(cards, this);
-        //adapter = new adapterCard(this.getActivity(), carname, cartype, carid ,this);
-        carRecycler.setAdapter(adapter);
-        carRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        // - Put the Request in a RequestQueue usning singelton
+        RequestHandlerSingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+        addnewcar = getView().findViewById(R.id.addnewcar);
+        addnewcar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ProfileFragment fragment = new ProfileFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putString("VALUE", s);
+//        fragment.setArguments(bundle);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
     }
-    void storeDataInArrays(){
-
-    }
-
 
     @Override
-    public void onphoneListClick(int clickedItemIndex, String s) {
+    public void onphoneListClick(int clickedItemIndex, String s , ArrayList<CardHelper> Cardinfo) {
 
         Intent mIntent;
 //        switch (clickedItemIndex){
 //            case 0: //first item in Recycler view
 
 //
-
+        System.out.println("Testing ------- "+Cardinfo.get(clickedItemIndex).getTitle());
+        System.out.println("Testing ------- "+Cardinfo.get(clickedItemIndex).getCompany());
+        System.out.println("Testing ------- "+Cardinfo.get(clickedItemIndex).getid());
 
         // To pass some value from FragmentA
 
-        Log.println(Log.ASSERT, "carIDInsideMethod", "" + s);
-        BookingFragment fragment = new BookingFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("VALUE", s);
-        fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+//        Log.println(Log.ASSERT, "carIDInsideMethod", "" + s);
+//        BookingFragment fragment = new BookingFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putString("VALUE", s);
+//        fragment.setArguments(bundle);
+//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.fragment_container, fragment);
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
 
 
     }

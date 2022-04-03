@@ -26,11 +26,11 @@ public class adapterCard extends RecyclerView.Adapter<adapterCard.PhoneViewHold>
     private Activity activity;
     private ArrayList carname, cartype, carid;
 
-    ArrayList<CardHelper> Cardlocations;
+    ArrayList<CardHelper> Cardinfo;
     final private ListItemClickListener mOnClickListener;
 
     public adapterCard(ArrayList<CardHelper> phoneLaocations, HomeFragment listener) {
-        this.Cardlocations = phoneLaocations;
+        this.Cardinfo = phoneLaocations;
         mOnClickListener = listener;
     }
 
@@ -54,32 +54,22 @@ public class adapterCard extends RecyclerView.Adapter<adapterCard.PhoneViewHold>
 
     @Override
     public void onBindViewHolder(@NonNull PhoneViewHold holder, int position) {
-        String img = "";
-
-        CardHelper carhelper = Cardlocations.get(position);
-        /*if((Integer.parseInt(Cardlocations.get(1)))==0){
-            holder.image.setImageResource(R.drawable.car);
-        }else {
-            holder.image.setImageResource(R.drawable.suvcar);
-        }*/
-        holder.image.setImageResource(R.drawable.suvcar);
+        CardHelper carhelper = Cardinfo.get(position);
+        holder.image.setImageResource(carhelper.getImage());
         holder.title.setText(carhelper.getTitle());
-        holder.relativeLayout.setBackground(carhelper.getgradient());
     }
 
     @Override
     public int getItemCount() {
-        return Cardlocations.size();
+        return Cardinfo.size();
 
     }
 
     public interface ListItemClickListener {
-        void onphoneListClick(int clickedItemIndex, String title);
+        void onphoneListClick(int clickedItemIndex, String title,ArrayList<CardHelper> Cardinfo);
     }
 
     public class PhoneViewHold extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-
         ImageView image;
         TextView title;
         RelativeLayout relativeLayout;
@@ -103,7 +93,7 @@ public class adapterCard extends RecyclerView.Adapter<adapterCard.PhoneViewHold>
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
-            mOnClickListener.onphoneListClick(clickedPosition, title.getText().toString());
+            mOnClickListener.onphoneListClick(clickedPosition, title.getText().toString(),Cardinfo);
         }
     }
 

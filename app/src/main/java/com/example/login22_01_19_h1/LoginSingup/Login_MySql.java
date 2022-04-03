@@ -3,6 +3,7 @@ package com.example.login22_01_19_h1.LoginSingup;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,8 +22,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.login22_01_19_h1.Constants;
 import com.example.login22_01_19_h1.DBHelper;
+import com.example.login22_01_19_h1.MainActivity;
 import com.example.login22_01_19_h1.Menu.Navigation_Main;
 import com.example.login22_01_19_h1.R;
+import com.example.login22_01_19_h1.RequestHandlerSingleton;
+import com.example.login22_01_19_h1.SharedPrefManger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,28 +38,40 @@ public class Login_MySql extends AppCompatActivity implements View.OnClickListen
     EditText email, password;
     Button btnSubmit;
     TextView createAcc;
-    DBHelper dbHelper;
     private ProgressDialog progressDialog;
+
+    static String UserID ;
+    String emailCheck ;
+    String passCheck ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Boolean e = false, p = false;
         setContentView(R.layout.activity_login);
+
+        if(SharedPrefManger.getInstance(this).isLoggedIn()){
+            finish();
+            /// ------------------*************------------------------
+            startActivity(new Intent(this , Navigation_Main.class));
+            return;
+        }
+
+
         email = findViewById(R.id.text_email);
         password = findViewById(R.id.text_pass);
         btnSubmit = findViewById(R.id.btnSubmit_login);
-        dbHelper = new DBHelper(this);
         progressDialog = new ProgressDialog(this);
         btnSubmit.setOnClickListener(this);
+        createAcc = findViewById(R.id.createAcc);
+        createAcc.setOnClickListener(this);
 
     }
 
     private void LoginUSer() {
 
-        String emailCheck = email.getText().toString();
-        String passCheck = password.getText().toString();
-//                Cursor  cursor = dbHelper.getData();
+        emailCheck = email.getText().toString();
+        passCheck = password.getText().toString();
 
         progressDialog.setMessage("REGISTER IS IN PROCCISING ");
         progressDialog.show();
@@ -65,14 +81,25 @@ public class Login_MySql extends AppCompatActivity implements View.OnClickListen
             public void onResponse(String response) {
                 progressDialog.dismiss();
                 try {
+
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getString("message").equalsIgnoreCase("Login Success")) {
 
-                        Toast.makeText(getApplicationContext(), "You are Logeed in successfully", Toast.LENGTH_LONG).show();
+                        Log.println(Log.ASSERT, "LoginPage",    jsonObject.getString("email"));
+
+                        Log.println(Log.ASSERT, "NAV", SharedPrefManger.getInstance(MainActivity.getAppContext()).getUserId() + ":");
+
+                        SharedPrefManger.getInstance(MainActivity.getAppContext()).userLogin(  jsonObject.getInt("id"), jsonObject.getString("username"),
+                                jsonObject.getString("email"));
+
+
+
+                        Toast.makeText(MainActivity.getAppContext(), "You are Logeed in successfully", Toast.LENGTH_LONG).show();
                         Intent intent1 = new Intent(Login_MySql.this, Navigation_Main.class);
                         startActivity(intent1);
+                        finish();
                     } else {
-                        Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.getAppContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -82,7 +109,7 @@ public class Login_MySql extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.hide();
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.getAppContext(), error.getMessage(), Toast.LENGTH_LONG).show();
 
             }
 
@@ -96,22 +123,24 @@ public class Login_MySql extends AppCompatActivity implements View.OnClickListen
                 return params;
             }
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-        createAcc = findViewById(R.id.createAcc);
-        createAcc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Login_MySql.this, signUp_mysqlphp.class);
-                startActivity(intent);
-            }
-        });
+
+
+        RequestHandlerSingleton.getInstance(this).addToRequestQueue(stringRequest);
+
 
     }
 
     public void onClick(View view) {
-        if (view == btnSubmit)
+        if (view == btnSubmit) {
             LoginUSer();
+        }else if (view == createAcc) {
+
+
+            Intent intent = new Intent(Login_MySql.this, signUp_mysqlphp.class);
+            startActivity(intent);
+        }
+
+
     }
 
     @Override
@@ -119,16 +148,8 @@ public class Login_MySql extends AppCompatActivity implements View.OnClickListen
 
     }
 
-//    public static boolean loginCheck(Cursor cursor,String emailCheck,String passCheck) {
-//        while (cursor.moveToNext()){
-//            if (cursor.getString(0).equals(emailCheck)) {
-//                if (cursor.getString(2).equals(passCheck)) {
-//                    return true;
-//                }
-//                return false;
-//            }
-//        }
-//        return false;
-//    }
+    public static String getuserID(){
+        return UserID;
+    }
 
 }

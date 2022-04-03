@@ -39,6 +39,7 @@ public class DatesAdapter extends RecyclerView.Adapter<DatesAdapter.ViewHolder> 
         // set text to the design
         holder.datetext.setText(dates.get(position).getTextdate());
         holder.dayname.setText(dates.get(position).getDaysname());
+
     }
 
     @Override

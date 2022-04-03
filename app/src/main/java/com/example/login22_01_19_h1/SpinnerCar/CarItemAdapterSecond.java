@@ -46,7 +46,7 @@ public class CarItemAdapterSecond extends ArrayAdapter<CarRowItem> {
             CarRowItem currentItem = getItem(position);
 
             if (currentItem != null) {
-                imageViewBrand.setImageResource(currentItem.getBrandImage());
+                imageViewBrand.setImageBitmap(currentItem.getBrandImage());
                 textViewName.setText(currentItem.getCarName());
             }
 
