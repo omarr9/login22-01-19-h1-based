@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -22,6 +23,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.login22_01_19_h1.Constants;
 import com.example.login22_01_19_h1.R;
 import com.example.login22_01_19_h1.RequestHandlerSingleton;
+import com.example.login22_01_19_h1.SharedPrefManger;
 import com.example.login22_01_19_h1.SliderHistory.ReservsationHelper;
 import com.example.login22_01_19_h1.SliderHistory.adapterCardHistory;
 import com.example.login22_01_19_h1.sliderhome.CardHelper;
@@ -32,6 +34,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 //public class HistoryFragment extends Fragment  {
 public class HistoryFragment extends Fragment implements adapterCardHistory.ListItemClickListenerReserv {
@@ -40,8 +44,27 @@ public class HistoryFragment extends Fragment implements adapterCardHistory.List
     TextView carnameview;
     ImageView imgtypeview;
     ArrayList<String> carname, cartype, carid;
+    ArrayList<String> CarNAmeArray = new ArrayList<>();
+    ArrayList<String> CarTypeArray = new ArrayList<>();
+    ArrayList<String> OurCarIDArray = new ArrayList<>();
+    ArrayList<String> CompanyIDArray = new ArrayList<>();
+    ArrayList<String> CarImageArray = new ArrayList<>();
+
     //CustomAdapter customAdapter;
     String carIdString;
+
+    String CarType ;
+    String CarName ;
+    String OurCarID ;
+    String CompanyID ;
+    String CarImage ;
+
+
+    String MCenterID;
+    String Name;
+    String Address;
+    String  GoogleMaps;
+    String Capacity;
 
     RecyclerView ReservRecycler;
     RecyclerView.Adapter adapter;
@@ -98,51 +121,140 @@ public class HistoryFragment extends Fragment implements adapterCardHistory.List
 
         Log.println(Log.ASSERT, "reservationIdString", "Hiiiiiiiiiiiiiiiii");
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_RESERVATION_HISTORY, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_GET_USER_BOOKING_INFO, new Response.Listener<String>() {
 
-            @Override
-            public void onResponse(String response) {
+            public void onResponse(String json_CarName_Arr) {
                 progressDialog.dismiss();
-                Log.println(Log.ASSERT, "reservationIdString", "Response");
-
-
                 try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject jsonResponse = jsonArray.getJSONObject(0);
-                    carname.clear();
-                    cartype.clear();
-                    JSONArray jsonArray_carS = jsonResponse.getJSONArray("response");
+                    Log.println(Log.ASSERT, "History", "Before");
 
-                    for (int i = 0; i < jsonArray_carS.length(); i++) {
-                        JSONObject responsS = jsonArray_carS.getJSONObject(i);
-
-                        String reservationIdString = responsS.getString("id").trim();
-                        String reservationLocationString = responsS.getString("Address").trim();
-                        String reservationDateString = responsS.getString("Date").trim();
-                        String reservationTimeString = responsS.getString("Time").trim();
-
-                        Log.println(Log.ASSERT, "LoginPage", reservationTimeString);
-                        ///////////////////////////////////////////////////////////////////////////////////
+                    JSONArray array = new JSONArray(json_CarName_Arr);
+                    Log.println(Log.ASSERT, "History", "After ");
 
 
-//                    }
+                    for (int i = 0; i < array.length(); i++) {
+                        //getting product object from json array
+                        Log.println(Log.ASSERT, "History", "Inside lOOP Before ");
 
+                        JSONObject jsonData = array.getJSONObject(i);
+                        //adding the product to product list
+//                        cards.add(new CardHelper(
 
-//                        Log.println(Log.ASSERT, "reservationIdString", reservationIdString);
-//                        Log.println(Log.ASSERT, "reservationLocationString", reservationLocationString);
-//                        Log.println(Log.ASSERT, "reservationDateString", reservationDateString);
+                              CarType =  jsonData.getString("CarType");
+                         CarName =   jsonData.getString("CarName");
+                         OurCarID =   jsonData.getString("OurCarID");
+                         CompanyID =    jsonData.getString("CompanyID");
+                        CarImage= jsonData.optString("CarImg");
 
+                        Log.println(Log.ASSERT, "History", "Inside lOOP After ");
+                        CarTypeArray.add(CarType);
+                        CarNAmeArray.add(CarName);
+                        OurCarIDArray.add(OurCarID);
+                        CompanyIDArray.add(CompanyID);
+                        CarImageArray.add(CarImage);
 
-//                        if (carTypeString.equalsIgnoreCase("Sedan")) {
-                        cards.add(new ReservsationHelper(R.drawable.car, reservationDateString, reservationTimeString, reservationLocationString, gradient2));
-//                        } else {
-//                            cards.add(new CardHelper(gradient3, R.drawable.suvcar, carNameString));
+//                        String CarType =      jsonData.optString("CarImg");
+//                        ));
+//                        Log.println(Log.ASSERT, "History", CarType);
+//                        Log.println(Log.ASSERT, "History", CarName);
+//                        Log.println(Log.ASSERT, "History", CompanyID);
+                    }
 
-//                        }
+                    for (int i = 0; i < CarNAmeArray.size(); i++) {
+                        Log.println(Log.ASSERT, "Array-History", CarNAmeArray.get(i));
+
 
                     }
 
-                    adapter = new adapterCardHistory(cards, HistoryFragment.this);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_GET_USER_BOOKING_INFO_CENTERS, new Response.Listener<String>() {
+
+                        public void onResponse(String json_Mcenter_Arr) {
+                            progressDialog.dismiss();
+                            try {
+//                                Log.println(Log.ASSERT, "History", "Before");
+
+                                JSONArray array = new JSONArray(json_Mcenter_Arr);
+//                                Log.println(Log.ASSERT, "History", "After ");
+
+
+                                for (int i = 0; i < array.length(); i++) {
+                                    //getting product object from json array
+//                                    Log.println(Log.ASSERT, "History", "Inside lOOP Before ");
+
+                                    JSONObject jsonData = array.getJSONObject(i);
+                                    //adding the product to product list
+//                        cards.add(new CardHelper(
+
+                                    MCenterID =  jsonData.getString("MCenterID");
+//                                    CompanyID =   jsonData.getString("CompanyID");
+                                    Name =   jsonData.getString("Name");
+                                    Address =    jsonData.getString("Address");
+                                    GoogleMaps =    jsonData.getString("GoogleMaps");
+                                    Capacity =    jsonData.getString("Capacity");
+
+
+                                    Log.println(Log.ASSERT, "History-Centers", MCenterID);
+                        Log.println(Log.ASSERT, "History-Centers", Name);
+                        Log.println(Log.ASSERT, "History-Centers", Address);
+
+                        cards.add(new ReservsationHelper(CarImageArray.get(i),  "2022", "10;30",Address , CarTypeArray.get(i) ,CarNAmeArray.get(i) ,Name ,"https://www.youtube.com", gradient1, R.drawable.ic_directions ));
+                                }
+
+
+                                cards.add(new ReservsationHelper(CarImageArray.get(0),  "2022", "10;30","One" , "Two" ,"Three ",Name ,  "https://www.google.com",gradient1,R.drawable.ic_directions));
+                                cards.add(new ReservsationHelper(CarImageArray.get(0),  "2024", "10;30","One" , "Two" ,"Three ",Name ,  "https://www.youtube.com",gradient2,R.drawable.ic_directions));
+
+                                adapter = new adapterCardHistory(getContext(),cards, HistoryFragment.this);
+                                //adapter = new adapterCard(this.getActivity(), carname, cartype, carid ,this);
+                                ReservRecycler.setAdapter(adapter);
+                                ReservRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.println(Log.ASSERT, "reservationIdString", "Error : " + e.toString());
+
+                            }
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            progressDialog.hide();
+//                        Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                            Log.println(Log.ASSERT, "reservationIdString", "onErrorResponser : " + error.toString());
+
+                        }
+
+                    })
+
+                    {
+                        @Nullable
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<>();
+                            int i = 0;
+//                    SharedPrefManger.getInstance(getActivity()).getCopmanyId();
+                            params.put("UserID", String.valueOf(SharedPrefManger.getInstance(getActivity()).getUserId()));
+                            Log.println(Log.ASSERT, "reservationIdString", "Check Final-Centers:");
+
+                            return params;
+                        }
+                    };
+
+
+//        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+//        requestQueue.add(stringRequest);
+
+                    RequestHandlerSingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+
+
+                    adapter = new adapterCardHistory(getContext(),cards, HistoryFragment.this);
                     //adapter = new adapterCard(this.getActivity(), carname, cartype, carid ,this);
                     ReservRecycler.setAdapter(adapter);
                     ReservRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -165,16 +277,30 @@ public class HistoryFragment extends Fragment implements adapterCardHistory.List
 
             }
 
-        }) {
+        })
 
+        {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                int i = 0;
+//                    SharedPrefManger.getInstance(getActivity()).getCopmanyId();
+                params.put("UserID", String.valueOf(SharedPrefManger.getInstance(getActivity()).getUserId()));
+                Log.println(Log.ASSERT, "reservationIdString", "Check Final:");
+
+                return params;
+            }
         };
+
+
 //        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 //        requestQueue.add(stringRequest);
 
         RequestHandlerSingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
 
 
-        adapter = new adapterCardHistory(cards, this);
+        adapter = new adapterCardHistory(getContext(),cards, this);
         //adapter = new adapterCard(this.getActivity(), carname, cartype, carid ,this);
         ReservRecycler.setAdapter(adapter);
         ReservRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.VERTICAL, false));

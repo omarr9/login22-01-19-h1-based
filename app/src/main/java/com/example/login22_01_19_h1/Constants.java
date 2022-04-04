@@ -12,6 +12,10 @@ public class Constants {
     public static final String URL_CompanyCars_RETRIVE = ROOT_URL + "GetCompanyInfo.php";
     public static final String URL_RESERVATION_HISTORY = ROOT_URL + "ReservationHistory.php";
     public static final String URL_Retrive_Centers = ROOT_URL + "Centers.php";
-    public static final String URL_Avalabilty_Check = ROOT_URL + "GetAvalability.php";
+    public static final String URL_AVAILABILITY_CHECK = ROOT_URL + "GetAvalability.php";
+    public static final String URL_GET_USER_BOOKING_INFO = ROOT_URL + "GetBookingHistory.php";
+    public static final String URL_GET_USER_BOOKING_INFO_CENTERS = ROOT_URL + "GetBookingHistory_Centers.php";
+
+
 
 }
